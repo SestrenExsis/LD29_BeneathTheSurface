@@ -6,28 +6,53 @@ package
 	{
 		[Embed(source="../assets/images/FullCurtains.png")] public var imgFullCurtain:Class;
 		
+		public var type:String = "";
+		
 		protected var _progress:Number = 0;
 		
-		public var isFront:Boolean = true;
 		public var isLeft:Boolean = true;
 
 		public var minimumWidth:Number = 100;
 		public var maximumWidth:Number = 320;
 		public var style:int = 0;
 		
-		public function Curtain(X:Number, Y:Number)
+		public function Curtain(Type:String, IsLeft:Boolean)
 		{
-			super(X, Y);
+			super(0, 0);
 			
-			loadGraphic(imgFullCurtain, true, false, 320, 240);
+			loadGraphic(imgFullCurtain, true, false, 320, 360);
+			type = Type;
+			
+			if (type == "backdrop")
+			{
+				setDimensions(150, 320, 270);
+				setCurtainType(IsLeft, 2);
+			}
+			else if (type == "far")
+			{
+				setDimensions(120, 320, 300);
+				setCurtainType(IsLeft, 1);
+			}
+			else if (type == "near")
+			{
+				setDimensions(90, 320, 330);
+				setCurtainType(IsLeft, 0);
+			}
+			
 			progress = 1;
 		}
 		
-		public function setCurtainType(IsFront:Boolean, IsLeft:Boolean, Style:int):void
+		public function setCurtainType(IsLeft:Boolean, Style:int):void
 		{
-			isFront = IsFront;
-			isLeft = IsLeft;
+			_isFront = true;
 			style = Style;
+			isLeft = IsLeft;
+			
+			if (isLeft)
+				x = 0;
+			else
+				x = 320;
+			
 			var _xOrigin:Number = (isLeft) ? 0 : frameWidth;
 			origin.make(_xOrigin, 0);
 			
@@ -50,6 +75,31 @@ package
 		override public function update():void
 		{	
 			super.update();
+		}
+		
+		override public function switchView():void
+		{
+			_isFront = !_isFront;
+			
+			if (type == "backdrop")
+			{
+				visible = isFront;
+			}
+			else if (type == "far")
+			{
+				if (isFront)
+					style = 1;
+				else
+					style = 0;
+			}
+			else if (type == "near")
+			{
+				if (isFront)
+					style = 0;
+				else
+					style = 1;
+			}
+			frame = style + ((isFront) ? 0 : 3);
 		}
 		
 		public function get progress():Number
