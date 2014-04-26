@@ -87,17 +87,13 @@ package
 			}
 			else if (type == "far")
 			{
-				if (isFront)
-					style = 1;
-				else
-					style = 0;
+				style = (isFront) ? 1 : 0;
+				order = (isFront) ? 0 : 1000;
 			}
 			else if (type == "near")
 			{
-				if (isFront)
-					style = 0;
-				else
-					style = 1;
+				style = (isFront) ? 0 : 1;
+				order = (isFront) ? 1000 : 0;
 			}
 			frame = style + ((isFront) ? 0 : 3);
 		}

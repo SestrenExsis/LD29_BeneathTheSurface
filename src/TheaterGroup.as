@@ -5,8 +5,7 @@ package
 	public class TheaterGroup extends FlxGroup
 	{
 		private var seats:Entity;
-		private var topPanel:Entity;
-		private var topCurtain:Entity;
+		private var valance:Entity;
 		
 		private var frontLeftCurtain:Curtain;
 		private var frontRightCurtain:Curtain;
@@ -14,52 +13,47 @@ package
 		private var midLeftCurtain:Curtain;
 		private var midRightCurtain:Curtain;
 		
-		private var backLeftCurtain:Curtain;
-		private var backRightCurtain:Curtain;
-		private var stage:Entity;
+		private var leftBackdrop:Curtain;
+		private var rightBackdrop:Curtain;
+		private var stageFloor:StageFloor;
 		
-		public var isAudienceView:Boolean;
+		public var isAudienceView:Boolean = true;
+		public var info:String;
 		
 		public function TheaterGroup()
 		{
 			super();
 			
-			stage = new Entity(0, 270);
-			stage.loadGraphic(stage.imgStage, true, false, 640, 90);
-			stage.origin.make(0.5 * stage.frameWidth, 0);
+			Entity.currentLayer = 0;
+			//background
+			leftBackdrop = new Curtain("backdrop", true);
+			rightBackdrop = new Curtain("backdrop", false);
+			stageFloor = new StageFloor();
+			add(leftBackdrop);
+			add(rightBackdrop);
+			add(stageFloor);
 			
-			backLeftCurtain = new Curtain("backdrop", true);
-			backRightCurtain = new Curtain("backdrop", false);
-			
+			Entity.currentLayer = 1;
+			//curtains
 			midLeftCurtain = new Curtain("far", true);
 			midRightCurtain = new Curtain("far", false);
-			
 			frontLeftCurtain = new Curtain("near", true);
 			frontRightCurtain = new Curtain("near", false);
-			
-			topCurtain = new Entity(0, 0);
-			topCurtain.loadGraphic(topCurtain.imgTopCurtain, true, false, 640, 50);
-			
-			topPanel = new Entity(0, -20);
-			topPanel.loadGraphic(topPanel.imgTopPanel);
-			
-			seats = new Entity(0, 285);
-			seats.loadGraphic(seats.imgSeats, true, false, 640, 100);
-			
-			add(stage);
-			
-			add(backLeftCurtain);
-			add(backRightCurtain);
-			
 			add(midLeftCurtain);
 			add(midRightCurtain);
-			
 			add(frontLeftCurtain);
 			add(frontRightCurtain);
 			
-			add(topCurtain);
-			add(topPanel);
+			Entity.currentLayer = 2;
+			//foreground
+			valance = new Valance();
+			seats = new Entity(0, 285);
+			seats.loadGraphic(seats.imgSeats, true, false, 640, 100);
+			add(valance);
 			add(seats);
+			
+			sort("order");
+			sort("layer");
 		}
 		
 		public function switchView():void
@@ -67,6 +61,19 @@ package
 			isAudienceView = !isAudienceView;
 			
 			callAll("switchView", true);
+			
+			if (isAudienceView)
+			{
+				sort("order");
+				sort("layer");
+				info = "Audience's View";
+			}
+			else
+			{
+				sort("order", DESCENDING);
+				sort("layer");
+				info = "Director's View";
+			}
 		}
 		
 		override public function update():void

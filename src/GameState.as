@@ -5,6 +5,7 @@ package
 	public class GameState extends ScreenState
 	{
 		private var theater:TheaterGroup;
+		private var information:FlxText;
 		
 		public function GameState()
 		{
