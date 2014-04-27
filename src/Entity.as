@@ -41,6 +41,14 @@ package
 				refreshPosition();
 		}
 		
+		public function getViewX():Number
+		{
+			if (isFront)
+				return (1 - _stageX);
+			else
+				return _stageX;
+		}
+		
 		public function get stageX():Number
 		{
 			return _stageX;
@@ -51,6 +59,15 @@ package
 		{
 			_stageX = Value;
 			stageDirty = true;
+		}
+		
+		
+		public function getViewY():Number
+		{
+			if (isFront)
+				return (1 - _stageY);
+			else
+				return _stageY;
 		}
 		
 		public function get stageY():Number
@@ -67,28 +84,26 @@ package
 		
 		public function get stageScale():Number
 		{
-			var _yy:Number = (_isFront) ? 1 - _stageY : _stageY;
-			return MIN_SCALE + (1 - MIN_SCALE) * _yy;
+			return MIN_SCALE + (1 - MIN_SCALE) * getViewY();
 		}
 		
 		public function refreshPosition():void
 		{
-			var _yy:Number = (_isFront) ? 1 - _stageY : _stageY;
-			y = TOP_LEFT.y + _yy * (BOTTOM_LEFT.y - TOP_LEFT.y) - height;
+			y = TOP_LEFT.y + getViewY() * (BOTTOM_LEFT.y - TOP_LEFT.y) - height;
 			
-			var _xxT:Number = _stageX * TOP_WIDTH + TOP_LEFT.x - BOTTOM_LEFT.x;
-			var _xxB:Number = _stageX * BOTTOM_WIDTH;
-			var _xx:Number = _xxB + (1 - _yy) * (_xxT - _xxB);
+			var _xxT:Number = getViewX() * TOP_WIDTH + TOP_LEFT.x - BOTTOM_LEFT.x;
+			var _xxB:Number = getViewX() * BOTTOM_WIDTH;
+			var _xx:Number = _xxB + (1 - getViewY()) * (_xxT - _xxB);
 			
-			if (_isFront)
+			/*if (_isFront)
 			{
 				var _reflectDistance:Number = _xx - 0.5 * FlxG.width;
 				_xx -= _reflectDistance * 2;
-			}
+			}*/
 				
-			x = (_isFront) ? _xx + origin.x : _xx - origin.x;
+			x = _xx - 0.5 * width;
 			
-			var _newScale:Number = MIN_SCALE + (1 - MIN_SCALE) * _yy;
+			var _newScale:Number = MIN_SCALE + (1 - MIN_SCALE) * getViewY();
 			scale.x = (width * _newScale) / frameWidth;
 			scale.y = (height * _newScale) / frameHeight;
 			

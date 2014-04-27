@@ -120,11 +120,11 @@ package
 			}
 			else if (FlxG.keys.pressed("Z"))
 			{
-				wave0.x -= 1;
+				wave0.stageX -= 0.005;
 			}
 			else if (FlxG.keys.pressed("X"))
 			{
-				wave0.x += 1;
+				wave0.stageX += 0.005;
 			}
 		}
 	}

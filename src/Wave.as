@@ -16,13 +16,28 @@ package
 			loadGraphic(imgWaves, true, false, 564, 85);
 			origin.make(0.5 * frameWidth, frameHeight);
 			
-			stageX = -0.8;
+			stageX = 0.5;
 			stageY = 0.34 + 0.31 * ((index + 1) / 4);
+			
+			if (index == 0)
+			{
+				FlxG.watch(this, "stageX");
+				FlxG.watch(this, "stageY");
+				FlxG.watch(this, "x");
+				FlxG.watch(this, "y");
+			}
 		}
 		
 		override public function update():void
 		{	
 			super.update();
+		}
+		
+		override protected function calcFrame():void
+		{
+			super.calcFrame();
+			
+			origin.make(0.5 * frameWidth, frameHeight);
 		}
 		
 		override public function switchView():void
