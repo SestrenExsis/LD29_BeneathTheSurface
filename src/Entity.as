@@ -97,13 +97,6 @@ package
 			var _xxT:Number = viewX * TOP_WIDTH + TOP_LEFT.x - BOTTOM_LEFT.x;
 			var _xxB:Number = viewX * BOTTOM_WIDTH;
 			var _xx:Number = _xxB + (1 - viewY) * (_xxT - _xxB);
-			
-			/*if (_isFront)
-			{
-				var _reflectDistance:Number = _xx - 0.5 * FlxG.width;
-				_xx -= _reflectDistance * 2;
-			}*/
-				
 			x = _xx - 0.5 * width;
 			
 			var _newScale:Number = MIN_SCALE + (1 - MIN_SCALE) * viewY;

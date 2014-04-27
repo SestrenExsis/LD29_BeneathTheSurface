@@ -4,30 +4,27 @@ package
 	
 	public class TheaterGroup extends FlxGroup
 	{
+		public static var selected:String = "";
+		
+		private var stageObjects:FlxGroup;
+		
 		private var seats:Entity;
 		private var valanceBack:Entity;
 		private var valanceFront:Entity;
 		private var leftBackdrop:Curtain;
 		private var rightBackdrop:Curtain;
 		private var stageFloor:StageFloor;
-		
-		private var stageObjects:FlxGroup;
-		
 		private var frontLeftCurtain:Curtain;
 		private var frontRightCurtain:Curtain;
 		private var midLeftCurtain:Curtain;
 		private var midRightCurtain:Curtain;
-		
 		private var wave0:Wave;
 		private var wave1:Wave;
 		private var wave2:Wave;
 		
 		public var information:InfoText;
+		public var lastAction:InfoText;
 		public var isAudienceView:Boolean = true;
-		
-		private var debugEntity:Entity;
-		
-		private var selected:String = "";
 		
 		public function TheaterGroup()
 		{
@@ -75,8 +72,10 @@ package
 			//add(seats);
 			
 			//other
-			information = new InfoText();
+			information = new InfoText("View");
 			add(information);
+			lastAction = new InfoText("Action");
+			add(lastAction);
 			
 			stageObjects.sort("order");
 		}
@@ -97,15 +96,9 @@ package
 				switchView();
 				
 				if (isAudienceView)
-				{
 					stageObjects.members.sortOn("order", Array.NUMERIC);
-					//sort("order");
-				}
 				else
-				{
 					stageObjects.members.sortOn("order", Array.NUMERIC | Array.DESCENDING);
-					//sort("order", DESCENDING);
-				}
 			}
 		}
 		
@@ -115,13 +108,20 @@ package
 			
 			if (FlxG.keys.justPressed("C"))
 			{
-				if (selected == "Open Curtains")
-					selected = "Close Curtains";
+				if (selected == "Open Curtain")
+					selected = "Close Curtain";
 				else
-					selected = "Open Curtains";
+					selected = "Open Curtain";
 			}
 			else if (FlxG.keys.justPressed("W"))
-				selected = "waves";
+			{
+				if (selected == "Front Waves")
+					selected = "Middle Waves";
+				else if (selected == "Middle Waves")
+					selected = "Back Waves";
+				else
+					selected = "Front Waves";
+			}
 			else if (FlxG.keys.justPressed("S"))
 				selected = "shark";
 			
@@ -131,32 +131,49 @@ package
 				rightAction();
 			if (FlxG.keys.justPressed("DOWN"))
 				downAction();
-			
 		}
 		
 		private function leftAction():void
 		{
-			if (selected == "Open Curtains")
+			if (selected == "Open Curtain")
 				(isAudienceView) ? frontRightCurtain.decrease() : frontLeftCurtain.decrease();
-			else if (selected == "Close Curtains")
+			else if (selected == "Close Curtain")
 				(isAudienceView) ? frontRightCurtain.increase() : frontLeftCurtain.increase();
+			else if (selected == "Front Waves")
+				(isAudienceView) ? wave2.increase() : wave2.decrease();
+			else if (selected == "Middle Waves")
+				(isAudienceView) ? wave1.increase() : wave1.decrease();
+			else if (selected == "Back Waves")
+				(isAudienceView) ? wave0.increase() : wave0.decrease();
 		}
 		
 		private function rightAction():void
 		{
-			if (selected == "Open Curtains")
+			if (selected == "Open Curtain")
 				(isAudienceView) ? frontLeftCurtain.decrease() : frontRightCurtain.decrease();
-			else if (selected == "Close Curtains")
+			else if (selected == "Close Curtain")
 				(isAudienceView) ? frontLeftCurtain.increase() : frontRightCurtain.increase();
+			else if (selected == "Front Waves")
+				(isAudienceView) ? wave2.decrease() : wave2.increase();
+			else if (selected == "Middle Waves")
+				(isAudienceView) ? wave1.decrease() : wave1.increase();
+			else if (selected == "Back Waves")
+				(isAudienceView) ? wave0.decrease() : wave0.increase();
 		}
 		
 		private function downAction():void
 		{
-			if (selected == "Open Curtains" || selected == "Close Curtains")
+			if (selected == "Open Curtain" || selected == "Close Curtain")
 			{
 				frontLeftCurtain.pause();
 				frontRightCurtain.pause();
 			}
+			else if (selected == "Front Waves")
+				wave2.pause();
+			else if (selected == "Middle Waves")
+				wave1.pause();
+			else if (selected == "Back Waves")
+				wave0.pause();
 		}
 	}
 	

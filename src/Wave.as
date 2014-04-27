@@ -18,6 +18,8 @@ package
 			
 			stageX = 0.5;
 			stageY = 0.666 - 0.332 * ((index) / 2);
+			
+			_moveSpeed = 0.0015;
 		}
 		
 		override public function update():void

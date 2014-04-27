@@ -9,19 +9,34 @@ package
 		public var order:int = 0;
 		public var stageY:Number = 0;
 		
-		public function InfoText()
+		public var type:String;
+		
+		public function InfoText(Type:String)
 		{
-			super(0, 0, FlxG.width, "Blah");
+			super(0, 0, FlxG.width);
 			
-			setFormat(null, 16, 0xffffff, "center");
 			ID = Entity.currentLayer;
 			order = 0;
-			text = (_isFront) ? "Audience's View" : "Director's View";
+			type = Type;
+			
+			if (type == "View")
+			{
+				setFormat(null, 16, 0xffffff, "center");
+				text = (_isFront) ? "Audience's View" : "Director's View";
+			}
+			else
+			{
+				y += 16;
+				setFormat(null, 16, 0xffff88, "center");
+				text = "";
+			}
 		}
 		
 		override public function update():void
 		{	
 			super.update();
+			if (type != "View")
+				text = (TheaterGroup.selected == "") ? "" : "\"" + TheaterGroup.selected + "\"";
 		}
 		
 		public function get isFront():Boolean
@@ -33,7 +48,8 @@ package
 		{
 			_isFront = !_isFront;
 			
-			text = (_isFront) ? "Audience's View" : "Director's View";
+			if (type == "View")
+				text = (_isFront) ? "Audience's View" : "Director's View";
 		}
 	}
 	
