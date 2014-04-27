@@ -20,9 +20,9 @@ package
 		
 		override public function switchView():void
 		{
-			_isFront = !_isFront;
+			super.switchView();
 			
-			layer = (isFront) ? 2 : 0;
+			ID = (isFront) ? 2 : 0;
 			frame = (isFront) ? 0 : 1;
 		}
 	}

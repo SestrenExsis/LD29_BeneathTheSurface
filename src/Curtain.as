@@ -6,69 +6,63 @@ package
 	{
 		[Embed(source="../assets/images/FullCurtains.png")] public var imgFullCurtain:Class;
 		
-		public var type:String = "";
+		public static const OUTSIDE_CURTAIN:int = 0;
+		public static const INSIDE_CURTAIN:int = 1;
+		public static const BACKDROP:int = 2;
+		
+		public var type:int;
+		public var isLeft:Boolean = true;
+		public var minWidth:Number = 0;
+		public var maxWidth:Number = 320;
 		
 		protected var _progress:Number = 0;
 		
-		public var isLeft:Boolean = true;
-
-		public var minimumWidth:Number = 100;
-		public var maximumWidth:Number = 320;
-		public var style:int = 0;
-		
-		public function Curtain(Type:String, IsLeft:Boolean)
+		public function Curtain(Type:int, IsLeft:Boolean)
 		{
-			super(0, 0);
+			super(-1000, -1000);
 			
-			loadGraphic(imgFullCurtain, true, false, 320, 360);
-			type = Type;
-			
-			if (type == "backdrop")
-			{
-				setDimensions(150, 320, 270);
-				setCurtainType(IsLeft, 2);
-			}
-			else if (type == "far")
-			{
-				setDimensions(120, 320, 300);
-				setCurtainType(IsLeft, 1);
-			}
-			else if (type == "near")
-			{
-				setDimensions(90, 320, 330);
-				setCurtainType(IsLeft, 0);
-			}
-			
+			loadGraphic(imgFullCurtain, true, false, 320, 330);
+			setCurtainType(Type, IsLeft);
 			progress = 1;
 		}
 		
-		public function setCurtainType(IsLeft:Boolean, Style:int):void
+		public function setCurtainType(Type:int, IsLeft:Boolean):void
 		{
-			_isFront = true;
-			style = Style;
+			type = Type;
 			isLeft = IsLeft;
+			frame = type + ((isFront) ? 0 : 3);
+			stageX = (isLeft) ? 0 : 1;
 			
-			if (isLeft)
-				x = 0;
+			if (type == BACKDROP)
+				stageY = 0;
+			else if (type == INSIDE_CURTAIN)
+				stageY = 0.333;
 			else
-				x = 320;
+				stageY = 0.667;
+			stageDirty = true;
 			
-			var _xOrigin:Number = (isLeft) ? 0 : frameWidth;
-			origin.make(_xOrigin, 0);
-			
-			frame = style + ((isFront) ? 0 : 3);
+			if (type == OUTSIDE_CURTAIN)
+				setDimensions(90, 320)
+			else if (type == INSIDE_CURTAIN)
+				setDimensions(120, 120)
+			else if (type == BACKDROP)
+				setDimensions(320, 320);
 		}
 		
-		public function setDimensions(MinWidth:Number, MaxWidth:Number, Height:Number):void
+		public function setDimensions(MinWidth:Number, MaxWidth:Number):void
 		{
-			minimumWidth = MinWidth;
-			maximumWidth = MaxWidth;
-			
-			scale.y = Height / frameHeight;
+			minWidth = MinWidth;
+			maxWidth = MaxWidth;
 		}
 		
 		override public function draw():void
 		{
+			if ((isLeft && !isFront) || (!isLeft && isFront))
+				origin.x = 0;
+			else
+				origin.x = frameWidth;
+			origin.y = 0;
+			
 			super.draw();
 		}
 		
@@ -79,23 +73,29 @@ package
 		
 		override public function switchView():void
 		{
-			_isFront = !_isFront;
+			super.switchView();
 			
-			if (type == "backdrop")
-			{
+			if (type == BACKDROP)
 				visible = isFront;
-			}
-			else if (type == "far")
+			else if (type == OUTSIDE_CURTAIN)
 			{
-				style = (isFront) ? 1 : 0;
-				order = (isFront) ? 0 : 1000;
+				if (isFront)
+					setDimensions(90, 320);
+				else
+					setDimensions(120, 320);
+				//_order = (isFront) ? 0 : 10000;
 			}
-			else if (type == "near")
+			else if (type == INSIDE_CURTAIN)
 			{
-				style = (isFront) ? 0 : 1;
-				order = (isFront) ? 1000 : 0;
+				if (isFront)
+					setDimensions(120, 120);
+				else
+					setDimensions(90, 90);
+				//_order = (isFront) ? 10000 : 0;
 			}
-			frame = style + ((isFront) ? 0 : 3);
+			
+			frame = type + ((isFront) ? 0 : 3);
+			dirty = true;
 		}
 		
 		public function get progress():Number
@@ -105,17 +105,48 @@ package
 		
 		public function set progress(Value:Number):void
 		{
-			if (_progress != Value)
-			{
-				if (Value > 1)
-					Value = 1;
-				else if (Value < 0)
-					Value = 0;
-				_progress = Value;
-				var _newWidth:Number = minimumWidth + Value * (maximumWidth - minimumWidth);
-				scale.x = _newWidth / frameWidth;
-			}
+			if (Value > 1)
+				Value = 1;
+			else if (Value < 0)
+				Value = 0;
+			_progress = Value;
+			var _newWidth:Number = minWidth + Value * (maxWidth - minWidth);
+			scale.x = _newWidth / frameWidth;
 		}
+		
+		override public function refreshPosition():void
+		{
+			var _yy:Number = (_isFront) ? _stageY : 1 - _stageY;
+			//y = TOP_LEFT.y + _yy * (BOTTOM_LEFT.y - TOP_LEFT.y) - height;
+			
+			//var _xxT:Number = _stageX * TOP_WIDTH + TOP_LEFT.x - BOTTOM_LEFT.x;
+			//var _xxB:Number = _stageX * BOTTOM_WIDTH;
+			//var _xx:Number = _xxB + (1 - _yy) * (_xxT - _xxB);
+			
+			if ((isLeft && !isFront) || (!isLeft && isFront))
+				x = 0;
+			else
+				x = 320;
+			
+			var _newHeight:Number = 360 * (MIN_SCALE + _yy * (1 - MIN_SCALE));
+			var _newWidth:Number = minWidth + progress * (maxWidth - minWidth);
+			scale.x = _newWidth / frameWidth;
+			scale.y = _newHeight / frameHeight;
+			y = 0;
+			stageDirty = false;
+			//FlxG.log();
+		}
+		
+		/*override public function get order():int
+		{
+			if (type == BACKDROP)
+				_order = 0;
+			else if (type == INSIDE_CURTAIN)
+				_order = 1000;
+			else
+				_order = 2000;
+			return _order;
+		}*/
 	}
 	
 }

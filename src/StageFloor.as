@@ -11,6 +11,7 @@ package
 			super(0, 270);
 			
 			loadGraphic(imgStage, true, false, 640, 90);
+			stageY = 1;
 		}
 		
 		override public function update():void
@@ -20,9 +21,14 @@ package
 		
 		override public function switchView():void
 		{
-			_isFront = !_isFront;
+			super.switchView();
 			
 			frame = (isFront) ? 0 : 1;
+		}
+		
+		override public function refreshPosition():void
+		{
+			stageDirty = false;
 		}
 	}
 	

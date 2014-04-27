@@ -6,19 +6,22 @@ package
 	{
 		private var seats:Entity;
 		private var valance:Entity;
-		
 		private var frontLeftCurtain:Curtain;
 		private var frontRightCurtain:Curtain;
-		
 		private var midLeftCurtain:Curtain;
 		private var midRightCurtain:Curtain;
-		
 		private var leftBackdrop:Curtain;
 		private var rightBackdrop:Curtain;
 		private var stageFloor:StageFloor;
 		
-		public var isAudienceView:Boolean = true;
-		public var info:String;
+		private var wave0:Wave;
+		private var wave1:Wave;
+		private var wave2:Wave;
+		
+		public var information:InfoText;
+		public var isAudienceView:Boolean = false;
+		
+		private var debugEntity:Entity;
 		
 		public function TheaterGroup()
 		{
@@ -26,34 +29,59 @@ package
 			
 			Entity.currentLayer = 0;
 			//background
-			leftBackdrop = new Curtain("backdrop", true);
-			rightBackdrop = new Curtain("backdrop", false);
+			leftBackdrop = new Curtain(Curtain.BACKDROP, true);
+			rightBackdrop = new Curtain(Curtain.BACKDROP, false);
+			
+			Entity.currentLayer = 1;
 			stageFloor = new StageFloor();
 			add(leftBackdrop);
 			add(rightBackdrop);
 			add(stageFloor);
 			
-			Entity.currentLayer = 1;
+			Entity.currentLayer = 2;
 			//curtains
-			midLeftCurtain = new Curtain("far", true);
-			midRightCurtain = new Curtain("far", false);
-			frontLeftCurtain = new Curtain("near", true);
-			frontRightCurtain = new Curtain("near", false);
+			midLeftCurtain = new Curtain(Curtain.INSIDE_CURTAIN, true);
+			midRightCurtain = new Curtain(Curtain.INSIDE_CURTAIN, false);
+			//wave0 = new Wave(0);
+			//wave1 = new Wave(1);
+			//wave2 = new Wave(2);
+			frontLeftCurtain = new Curtain(Curtain.OUTSIDE_CURTAIN, true);
+			frontRightCurtain = new Curtain(Curtain.OUTSIDE_CURTAIN, false);
 			add(midLeftCurtain);
 			add(midRightCurtain);
+			//add(wave0);
+			//add(wave1);
+			//add(wave2);
 			add(frontLeftCurtain);
 			add(frontRightCurtain);
 			
-			Entity.currentLayer = 2;
+			Entity.currentLayer = 3;
 			//foreground
-			valance = new Valance();
+			/*valance = new Valance();
 			seats = new Entity(0, 285);
 			seats.loadGraphic(seats.imgSeats, true, false, 640, 100);
 			add(valance);
-			add(seats);
+			add(seats);*/
+			
+			debugEntity = new Entity(-1000, -1000);
+			debugEntity.makeGraphic(25, 50);
+			debugEntity.origin.make(0.5 * debugEntity.frameWidth, debugEntity.frameHeight);
+			debugEntity.stageX = debugEntity.stageY = 0;
+			add(debugEntity);
+			
+			Entity.currentLayer = 4;
+			//other
+			information = new InfoText();
+			add(information);
 			
 			sort("order");
-			sort("layer");
+			sort("ID");
+			
+			FlxG.watch(debugEntity, "stageX");
+			FlxG.watch(debugEntity, "stageY");
+			FlxG.watch(debugEntity, "x");
+			FlxG.watch(debugEntity, "y");
+			FlxG.watch(debugEntity.scale, "y");
 		}
 		
 		public function switchView():void
@@ -64,15 +92,15 @@ package
 			
 			if (isAudienceView)
 			{
-				sort("order");
-				sort("layer");
-				info = "Audience's View";
+				sort("stageY");
+				//sort("order");
+				sort("ID");
 			}
 			else
 			{
-				sort("order", DESCENDING);
-				sort("layer");
-				info = "Director's View";
+				sort("stageY", DESCENDING);
+				//sort("order", DESCENDING);
+				sort("ID");
 			}
 		}
 		
@@ -80,23 +108,38 @@ package
 		{	
 			super.update();
 			
-			if (FlxG.keys.justPressed("SPACE"))
+			
+			if (FlxG.keys.pressed("LEFT"))
 			{
-				switchView();
-			}
-			else if (FlxG.keys.pressed("LEFT"))
-			{
-				midLeftCurtain.progress -= 0.005;
-				midRightCurtain.progress -= 0.005;
+				//debugEntity.stageX -= 0.005;
 				frontLeftCurtain.progress -= 0.005;
 				frontRightCurtain.progress -= 0.005;
 			}
 			else if (FlxG.keys.pressed("RIGHT"))
 			{
-				midLeftCurtain.progress += 0.005;
-				midRightCurtain.progress += 0.005;
+				//debugEntity.stageX += 0.005;
 				frontLeftCurtain.progress += 0.005;
 				frontRightCurtain.progress += 0.005;
+			}
+			else if (FlxG.keys.pressed("UP"))
+			{
+				//debugEntity.stageY += 0.005;
+			}
+			else if (FlxG.keys.pressed("DOWN"))
+			{
+				//debugEntity.stageY -= 0.005;
+			}
+			else if (FlxG.keys.pressed("Z"))
+			{
+				wave0.x -= 1;
+			}
+			else if (FlxG.keys.pressed("X"))
+			{
+				wave0.x += 1;
+			}
+			else if (FlxG.keys.justPressed("SPACE"))
+			{
+				switchView();
 			}
 		}
 	}
