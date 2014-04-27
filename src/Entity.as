@@ -5,10 +5,10 @@ package
 	public class Entity extends FlxSprite
 	{
 		public static const BOTTOM_LEFT:FlxPoint = new FlxPoint(0, 360);
-		public static const TOP_LEFT:FlxPoint = new FlxPoint(90, 270);
+		public static const TOP_LEFT:FlxPoint = new FlxPoint(60, 270);
 		public static const BOTTOM_WIDTH:Number = 640;
-		public static const TOP_WIDTH:Number = 460;
-		public static const MIN_SCALE:Number = 0.75;
+		public static const TOP_WIDTH:Number = 520;
+		public static const MIN_SCALE:Number = 0.8;
 		
 		public static var currentLayer:int = 0;
 		public static var currentOrder:int = 0;

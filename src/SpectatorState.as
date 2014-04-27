@@ -18,8 +18,6 @@ package
 			playback.rewind();
 			theater = new TheaterGroup(true);
 			add(theater);
-			
-			//theater.switchView();
 		}
 		
 		override public function update():void

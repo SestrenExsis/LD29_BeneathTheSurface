@@ -18,7 +18,7 @@ package
 			
 			frame = 2 * index + ((isFront) ? 0 : 1);
 			stageX = 0.5;
-			stageY = 0.666 - 0.332 * ((index) / 2);
+			stageY = 0.665 - 0.331 * ((index) / 2);
 			
 			_moveSpeed = 0.001;
 		}

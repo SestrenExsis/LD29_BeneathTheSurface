@@ -26,6 +26,8 @@ package
 			super.update();
 			
 			// supress the space bar in the playback since it switches views
+			// doesn't seem to work, but keeping it here, anyway. Supression of view-switching is hard-coded
+			// into the TheaterGroup class, instead.
 			var _space:Boolean = FlxG.keys.pressed("SPACE");
 			if (FlxG.keys.pressed("SPACE"))
 				FlxG.keys.SPACE = false;

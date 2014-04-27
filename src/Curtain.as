@@ -97,7 +97,6 @@ package
 					setDimensions(120, 320);
 				else
 					setDimensions(150, 320);
-				//_order = (isFront) ? 0 : 10000;
 			}
 			else if (type == INSIDE_CURTAIN)
 			{
@@ -111,7 +110,6 @@ package
 					setDimensions(120, 120);
 					alpha = 0.5;
 				}
-				//_order = (isFront) ? 10000 : 0;
 			}
 			
 			frame = type + ((isFront) ? 0 : 3);

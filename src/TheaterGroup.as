@@ -23,6 +23,7 @@ package
 		private var wave0:Wave;
 		private var wave1:Wave;
 		private var wave2:Wave;
+		private var shark:Shark;
 		
 		public var information:InfoText;
 		public var lastAction:InfoText;
@@ -54,6 +55,7 @@ package
 			//curtains
 			midLeftCurtain = new Curtain(Curtain.INSIDE_CURTAIN, true);
 			midRightCurtain = new Curtain(Curtain.INSIDE_CURTAIN, false);
+			shark = new Shark();
 			wave0 = new Wave(0);
 			wave1 = new Wave(1);
 			wave2 = new Wave(2);
@@ -63,6 +65,7 @@ package
 			stageObjects = new FlxGroup();
 			stageObjects.add(midLeftCurtain);
 			stageObjects.add(midRightCurtain);
+			stageObjects.add(shark);
 			stageObjects.add(wave0);
 			stageObjects.add(wave1);
 			stageObjects.add(wave2);
@@ -172,6 +175,8 @@ package
 				wave1.decrease();
 			else if (selected == "Back Waves")
 				wave0.decrease();
+			else if (selected == "Shark")
+				shark.decrease();
 		}
 		
 		private function rightAction():void
@@ -194,6 +199,8 @@ package
 				wave1.increase();
 			else if (selected == "Back Waves")
 				wave0.increase();
+			else if (selected == "Shark")
+				shark.increase();
 		}
 		
 		private function downAction():void
@@ -209,6 +216,8 @@ package
 				wave1.pause();
 			else if (selected == "Back Waves")
 				wave0.pause();
+			else if (selected == "Shark")
+				shark.pause();
 		}
 	}
 	
