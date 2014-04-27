@@ -13,13 +13,14 @@ package
 			index = Index;
 			super(-1000, -1000);
 			
-			loadGraphic(imgWaves, true, false, 564, 85);
+			loadGraphic(imgWaves, true, false, 640, 85);
 			origin.make(0.5 * frameWidth, frameHeight);
 			
+			frame = 2 * index + ((isFront) ? 0 : 1);
 			stageX = 0.5;
 			stageY = 0.666 - 0.332 * ((index) / 2);
 			
-			_moveSpeed = 0.0015;
+			_moveSpeed = 0.001;
 		}
 		
 		override public function update():void

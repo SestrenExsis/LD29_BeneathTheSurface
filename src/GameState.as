@@ -16,6 +16,8 @@ package
 		{
 			super.create();
 			
+			playback.create(FlxG.random());
+			
 			theater = new TheaterGroup();
 			add(theater);
 		}
@@ -23,6 +25,13 @@ package
 		override public function update():void
 		{	
 			super.update();
+			
+			// supress the space bar in the playback since it switches views
+			var _space:Boolean = FlxG.keys.pressed("SPACE");
+			if (FlxG.keys.pressed("SPACE"))
+				FlxG.keys.SPACE = false;
+			playback.recordFrame();
+			FlxG.keys.SPACE = _space;
 		}
 	}
 	

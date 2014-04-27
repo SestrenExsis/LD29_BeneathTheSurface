@@ -8,7 +8,8 @@ package
 		
 		private var stageObjects:FlxGroup;
 		
-		private var seats:Entity;
+		private var seatsAudienceView:Entity;
+		private var seatsDirectorView:Entity;
 		private var valanceBack:Entity;
 		private var valanceFront:Entity;
 		private var leftBackdrop:Curtain;
@@ -38,10 +39,12 @@ package
 			add(rightBackdrop);
 			
 			Entity.currentLayer = 1;
+			seatsDirectorView = new Seats();
 			stageFloor = new StageFloor();
 			valanceBack = new Valance();
-			add(valanceBack);
+			add(seatsDirectorView);
 			add(stageFloor);
+			add(valanceBack);
 			
 			Entity.currentLayer = 2;
 			//curtains
@@ -66,10 +69,9 @@ package
 			Entity.currentLayer = 3;
 			//foreground
 			valanceFront = new Valance();
-			seats = new Entity(0, 285);
-			//seats.loadGraphic(seats.imgSeats, true, false, 640, 100);
+			seatsAudienceView = new Seats();
 			add(valanceFront);
-			//add(seats);
+			add(seatsAudienceView);
 			
 			//other
 			information = new InfoText("View");
@@ -78,6 +80,13 @@ package
 			add(lastAction);
 			
 			stageObjects.sort("order");
+			
+			switchView();
+			
+			if (isAudienceView)
+				stageObjects.members.sortOn("order", Array.NUMERIC);
+			else
+				stageObjects.members.sortOn("order", Array.NUMERIC | Array.DESCENDING);
 		}
 		
 		public function switchView():void
@@ -123,42 +132,44 @@ package
 					selected = "Front Waves";
 			}
 			else if (FlxG.keys.justPressed("S"))
-				selected = "shark";
+				selected = "Shark";
 			
-			if (FlxG.keys.justPressed("LEFT"))
+			if (FlxG.keys.justPressed("LEFT") || FlxG.keys.justPressed("J"))
 				leftAction();
-			if (FlxG.keys.justPressed("RIGHT"))
+			if (FlxG.keys.justPressed("RIGHT") || FlxG.keys.justPressed("L"))
 				rightAction();
-			if (FlxG.keys.justPressed("DOWN"))
+			if (FlxG.keys.justPressed("DOWN") || FlxG.keys.justPressed("K"))
 				downAction();
+			
+			
 		}
 		
 		private function leftAction():void
 		{
 			if (selected == "Open Curtain")
-				(isAudienceView) ? frontRightCurtain.decrease() : frontLeftCurtain.decrease();
+				frontLeftCurtain.decrease();
 			else if (selected == "Close Curtain")
-				(isAudienceView) ? frontRightCurtain.increase() : frontLeftCurtain.increase();
+				frontLeftCurtain.increase();
 			else if (selected == "Front Waves")
-				(isAudienceView) ? wave2.increase() : wave2.decrease();
+				wave2.decrease();
 			else if (selected == "Middle Waves")
-				(isAudienceView) ? wave1.increase() : wave1.decrease();
+				wave1.decrease();
 			else if (selected == "Back Waves")
-				(isAudienceView) ? wave0.increase() : wave0.decrease();
+				wave0.decrease();
 		}
 		
 		private function rightAction():void
 		{
 			if (selected == "Open Curtain")
-				(isAudienceView) ? frontLeftCurtain.decrease() : frontRightCurtain.decrease();
+				frontRightCurtain.decrease();
 			else if (selected == "Close Curtain")
-				(isAudienceView) ? frontLeftCurtain.increase() : frontRightCurtain.increase();
+				frontRightCurtain.increase();
 			else if (selected == "Front Waves")
-				(isAudienceView) ? wave2.decrease() : wave2.increase();
+				wave2.increase();
 			else if (selected == "Middle Waves")
-				(isAudienceView) ? wave1.decrease() : wave1.increase();
+				wave1.increase();
 			else if (selected == "Back Waves")
-				(isAudienceView) ? wave0.decrease() : wave0.increase();
+				wave0.increase();
 		}
 		
 		private function downAction():void
