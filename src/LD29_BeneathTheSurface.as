@@ -7,7 +7,7 @@ package
 	{
 		public function LD29_BeneathTheSurface()
 		{
-			super(640, 360, GameState, 1.0, 60, 60, true);
+			super(640, 360, MenuState, 1.0, 60, 60, true);
 			forceDebugger = true;
 		}
 	}

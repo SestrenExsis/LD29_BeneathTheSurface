@@ -5,7 +5,6 @@ package
 	public class GameState extends ScreenState
 	{
 		private var theater:TheaterGroup;
-		private var information:FlxText;
 		
 		public function GameState()
 		{
@@ -18,7 +17,7 @@ package
 			
 			playback.create(FlxG.random());
 			
-			theater = new TheaterGroup();
+			theater = new TheaterGroup(false);
 			add(theater);
 		}
 		

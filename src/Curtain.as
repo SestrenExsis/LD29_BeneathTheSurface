@@ -45,9 +45,9 @@ package
 			stageDirty = true;
 			
 			if (type == OUTSIDE_CURTAIN)
-				setDimensions(90, 320)
+				setDimensions(120, 320)
 			else if (type == INSIDE_CURTAIN)
-				setDimensions(120, 120)
+				setDimensions(150, 150)
 			else if (type == BACKDROP)
 				setDimensions(320, 320);
 		}

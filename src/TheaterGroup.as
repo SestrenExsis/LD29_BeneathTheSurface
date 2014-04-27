@@ -5,6 +5,7 @@ package
 	public class TheaterGroup extends FlxGroup
 	{
 		public static var selected:String = "";
+		public var state:int = 0;
 		
 		private var stageObjects:FlxGroup;
 		
@@ -26,10 +27,13 @@ package
 		public var information:InfoText;
 		public var lastAction:InfoText;
 		public var isAudienceView:Boolean = true;
-		
-		public function TheaterGroup()
+		public var isSpectating:Boolean = false;
+				
+		public function TheaterGroup(IsSpectating:Boolean = false)
 		{
 			super();
+			
+			isSpectating = IsSpectating;
 			
 			Entity.currentLayer = 0;
 			//background
@@ -81,7 +85,8 @@ package
 			
 			stageObjects.sort("order");
 			
-			switchView();
+			if (!isSpectating)
+				switchView();
 			
 			if (isAudienceView)
 				stageObjects.members.sortOn("order", Array.NUMERIC);
@@ -91,6 +96,8 @@ package
 		
 		public function switchView():void
 		{
+			if (isSpectating)
+				return;
 			isAudienceView = !isAudienceView;
 			
 			callAll("switchView", true);
@@ -141,15 +148,24 @@ package
 			if (FlxG.keys.justPressed("DOWN") || FlxG.keys.justPressed("K"))
 				downAction();
 			
-			
+			if (state == 2 && frontLeftCurtain.progress == 1 && frontRightCurtain.progress == 1)
+				ScreenState.goToMenu();
 		}
 		
 		private function leftAction():void
 		{
 			if (selected == "Open Curtain")
+			{
 				frontLeftCurtain.decrease();
+				if (state == 0)
+					state = 1;
+			}
 			else if (selected == "Close Curtain")
+			{
 				frontLeftCurtain.increase();
+				if (state == 1)
+					state = 2;
+			}
 			else if (selected == "Front Waves")
 				wave2.decrease();
 			else if (selected == "Middle Waves")
@@ -161,9 +177,17 @@ package
 		private function rightAction():void
 		{
 			if (selected == "Open Curtain")
+			{
 				frontRightCurtain.decrease();
+				if (state == 0)
+					state = 1;
+			}
 			else if (selected == "Close Curtain")
+			{
 				frontRightCurtain.increase();
+				if (state == 1)
+					state = 2;
+			}
 			else if (selected == "Front Waves")
 				wave2.increase();
 			else if (selected == "Middle Waves")
