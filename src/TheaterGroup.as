@@ -19,7 +19,7 @@ package
 		private var wave2:Wave;
 		
 		public var information:InfoText;
-		public var isAudienceView:Boolean = false;
+		public var isAudienceView:Boolean = true;
 		
 		private var debugEntity:Entity;
 		
@@ -42,16 +42,17 @@ package
 			//curtains
 			midLeftCurtain = new Curtain(Curtain.INSIDE_CURTAIN, true);
 			midRightCurtain = new Curtain(Curtain.INSIDE_CURTAIN, false);
-			//wave0 = new Wave(0);
-			//wave1 = new Wave(1);
-			//wave2 = new Wave(2);
+			wave2 = new Wave(2);
+			wave1 = new Wave(1);
+			wave0 = new Wave(0);
 			frontLeftCurtain = new Curtain(Curtain.OUTSIDE_CURTAIN, true);
 			frontRightCurtain = new Curtain(Curtain.OUTSIDE_CURTAIN, false);
+
 			add(midLeftCurtain);
 			add(midRightCurtain);
-			//add(wave0);
-			//add(wave1);
-			//add(wave2);
+			add(wave2);
+			add(wave1);
+			add(wave0);
 			add(frontLeftCurtain);
 			add(frontRightCurtain);
 			
@@ -63,12 +64,6 @@ package
 			add(valance);
 			add(seats);*/
 			
-			debugEntity = new Entity(-1000, -1000);
-			debugEntity.makeGraphic(25, 50);
-			debugEntity.origin.make(0.5 * debugEntity.frameWidth, debugEntity.frameHeight);
-			debugEntity.stageX = debugEntity.stageY = 0;
-			add(debugEntity);
-			
 			Entity.currentLayer = 4;
 			//other
 			information = new InfoText();
@@ -76,12 +71,6 @@ package
 			
 			sort("order");
 			sort("ID");
-			
-			FlxG.watch(debugEntity, "stageX");
-			FlxG.watch(debugEntity, "stageY");
-			FlxG.watch(debugEntity, "x");
-			FlxG.watch(debugEntity, "y");
-			FlxG.watch(debugEntity.scale, "y");
 		}
 		
 		public function switchView():void
@@ -89,35 +78,35 @@ package
 			isAudienceView = !isAudienceView;
 			
 			callAll("switchView", true);
+		}
+		
+		override public function preUpdate():void
+		{
+			super.preUpdate();
 			
-			if (isAudienceView)
+			if (FlxG.keys.justPressed("SPACE"))
 			{
-				sort("stageY");
-				//sort("order");
-				sort("ID");
+				switchView();
+				
+				if (isAudienceView)
+					sort("order");
+				else
+					sort("order", DESCENDING);
 			}
-			else
-			{
-				sort("stageY", DESCENDING);
-				//sort("order", DESCENDING);
-				sort("ID");
-			}
+			sort("ID");
 		}
 		
 		override public function update():void
 		{	
 			super.update();
 			
-			
 			if (FlxG.keys.pressed("LEFT"))
 			{
-				//debugEntity.stageX -= 0.005;
 				frontLeftCurtain.progress -= 0.005;
 				frontRightCurtain.progress -= 0.005;
 			}
 			else if (FlxG.keys.pressed("RIGHT"))
 			{
-				//debugEntity.stageX += 0.005;
 				frontLeftCurtain.progress += 0.005;
 				frontRightCurtain.progress += 0.005;
 			}
@@ -136,10 +125,6 @@ package
 			else if (FlxG.keys.pressed("X"))
 			{
 				wave0.x += 1;
-			}
-			else if (FlxG.keys.justPressed("SPACE"))
-			{
-				switchView();
 			}
 		}
 	}

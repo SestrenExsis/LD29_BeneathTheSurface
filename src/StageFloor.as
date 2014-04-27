@@ -12,6 +12,7 @@ package
 			
 			loadGraphic(imgStage, true, false, 640, 90);
 			stageY = 1;
+			visible = false;
 		}
 		
 		override public function update():void

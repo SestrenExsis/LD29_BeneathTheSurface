@@ -16,7 +16,7 @@ package
 			loadGraphic(imgWaves, true, false, 564, 85);
 			origin.make(0.5 * frameWidth, frameHeight);
 			
-			stageX = -0.5;
+			stageX = -0.8;
 			stageY = 0.34 + 0.31 * ((index + 1) / 4);
 		}
 		
@@ -28,7 +28,7 @@ package
 		override public function switchView():void
 		{
 			super.switchView();
-			frame = 2 * index + (isFront) ? 0 : 1;
+			frame = 2 * index + ((isFront) ? 0 : 1);
 		}
 	}
 	

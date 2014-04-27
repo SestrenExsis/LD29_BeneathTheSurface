@@ -4,8 +4,8 @@ package
 	
 	public class Entity extends FlxSprite
 	{
-		[Embed(source="../assets/images/TopPanel.png")] public var imgTopPanel:Class;
-		[Embed(source="../assets/images/Seats.png")] public var imgSeats:Class;
+		//[Embed(source="../assets/images/TopPanel.png")] public var imgTopPanel:Class;
+		//[Embed(source="../assets/images/Seats.png")] public var imgSeats:Class;
 		
 		public static const BOTTOM_LEFT:FlxPoint = new FlxPoint(0, 360);
 		public static const TOP_LEFT:FlxPoint = new FlxPoint(90, 270);
@@ -16,10 +16,11 @@ package
 		public static var currentLayer:int = 0;
 		public static var currentOrder:int = 0;
 		
+		public var order:int = 0;
+		
 		protected var _isFront:Boolean = true;
 		protected var _stageX:Number = 0;
 		protected var _stageY:Number = 0;
-		protected var _order:int = 0;
 		
 		public var stageDirty:Boolean = false;
 
@@ -28,8 +29,8 @@ package
 			super(X, Y);
 			
 			ID = currentLayer;
-			_order = currentOrder;
 			currentOrder++;
+			order = currentOrder;
 		}
 		
 		override public function update():void
@@ -85,7 +86,7 @@ package
 				_xx -= _reflectDistance * 2;
 			}
 				
-			x = (_isFront) ? _xx - origin.x : _xx + origin.x;
+			x = (_isFront) ? _xx + origin.x : _xx - origin.x;
 			
 			var _newScale:Number = MIN_SCALE + (1 - MIN_SCALE) * _yy;
 			scale.x = (width * _newScale) / frameWidth;
@@ -97,11 +98,6 @@ package
 		public function get isFront():Boolean
 		{
 			return _isFront;
-		}
-		
-		public function get order():int
-		{
-			return _order;
 		}
 		
 		public function switchView():void

@@ -30,6 +30,7 @@ package
 		{
 			type = Type;
 			isLeft = IsLeft;
+			
 			frame = type + ((isFront) ? 0 : 3);
 			stageX = (isLeft) ? 0 : 1;
 			
@@ -55,20 +56,31 @@ package
 			maxWidth = MaxWidth;
 		}
 		
-		override public function draw():void
+		override protected function calcFrame():void
 		{
+			super.calcFrame();
+			
 			if ((isLeft && !isFront) || (!isLeft && isFront))
 				origin.x = 0;
 			else
 				origin.x = frameWidth;
-			origin.y = 0;
 			
+			origin.y = 0;
+		}
+		
+		override public function draw():void
+		{
 			super.draw();
 		}
 		
 		override public function update():void
 		{	
 			super.update();
+			
+			if ((isLeft && !isFront) || (!isLeft && isFront))
+				x = 0;
+			else
+				x = 320;
 		}
 		
 		override public function switchView():void
@@ -95,7 +107,6 @@ package
 			}
 			
 			frame = type + ((isFront) ? 0 : 3);
-			dirty = true;
 		}
 		
 		public function get progress():Number
@@ -117,35 +128,22 @@ package
 		override public function refreshPosition():void
 		{
 			var _yy:Number = (_isFront) ? _stageY : 1 - _stageY;
-			//y = TOP_LEFT.y + _yy * (BOTTOM_LEFT.y - TOP_LEFT.y) - height;
-			
-			//var _xxT:Number = _stageX * TOP_WIDTH + TOP_LEFT.x - BOTTOM_LEFT.x;
-			//var _xxB:Number = _stageX * BOTTOM_WIDTH;
-			//var _xx:Number = _xxB + (1 - _yy) * (_xxT - _xxB);
-			
-			if ((isLeft && !isFront) || (!isLeft && isFront))
-				x = 0;
-			else
-				x = 320;
-			
 			var _newHeight:Number = 360 * (MIN_SCALE + _yy * (1 - MIN_SCALE));
 			var _newWidth:Number = minWidth + progress * (maxWidth - minWidth);
 			scale.x = _newWidth / frameWidth;
 			scale.y = _newHeight / frameHeight;
 			y = 0;
 			stageDirty = false;
-			//FlxG.log();
 		}
 		
 		/*override public function get order():int
 		{
-			if (type == BACKDROP)
-				_order = 0;
-			else if (type == INSIDE_CURTAIN)
-				_order = 1000;
+			if (type == INSIDE_CURTAIN)
+				return 0;
+			else if (type == OUTSIDE_CURTAIN)
+				return 1000;
 			else
-				_order = 2000;
-			return _order;
+				return _order;
 		}*/
 	}
 	
