@@ -17,15 +17,7 @@ package
 			origin.make(0.5 * frameWidth, frameHeight);
 			
 			stageX = 0.5;
-			stageY = 0.34 + 0.31 * ((index + 1) / 4);
-			
-			if (index == 0)
-			{
-				FlxG.watch(this, "stageX");
-				FlxG.watch(this, "stageY");
-				FlxG.watch(this, "x");
-				FlxG.watch(this, "y");
-			}
+			stageY = 0.666 - 0.332 * ((index) / 2);
 		}
 		
 		override public function update():void

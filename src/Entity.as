@@ -4,9 +4,6 @@ package
 	
 	public class Entity extends FlxSprite
 	{
-		//[Embed(source="../assets/images/TopPanel.png")] public var imgTopPanel:Class;
-		//[Embed(source="../assets/images/Seats.png")] public var imgSeats:Class;
-		
 		public static const BOTTOM_LEFT:FlxPoint = new FlxPoint(0, 360);
 		public static const TOP_LEFT:FlxPoint = new FlxPoint(90, 270);
 		public static const BOTTOM_WIDTH:Number = 640;
@@ -21,6 +18,10 @@ package
 		protected var _isFront:Boolean = true;
 		protected var _stageX:Number = 0;
 		protected var _stageY:Number = 0;
+		protected var _minStageX:Number = 0;
+		protected var _maxStageX:Number = 1;
+		protected var _movement:int = 0;
+		protected var _moveSpeed:Number = 0;
 		
 		public var stageDirty:Boolean = false;
 
@@ -37,11 +38,13 @@ package
 		{	
 			super.update();
 			
+			performActions();
+			
 			if (stageDirty)
 				refreshPosition();
 		}
 		
-		public function getViewX():Number
+		public function get viewX():Number
 		{
 			if (isFront)
 				return (1 - _stageX);
@@ -62,7 +65,7 @@ package
 		}
 		
 		
-		public function getViewY():Number
+		public function get viewY():Number
 		{
 			if (isFront)
 				return (1 - _stageY);
@@ -84,16 +87,16 @@ package
 		
 		public function get stageScale():Number
 		{
-			return MIN_SCALE + (1 - MIN_SCALE) * getViewY();
+			return MIN_SCALE + (1 - MIN_SCALE) * viewY;
 		}
 		
 		public function refreshPosition():void
 		{
-			y = TOP_LEFT.y + getViewY() * (BOTTOM_LEFT.y - TOP_LEFT.y) - height;
+			y = TOP_LEFT.y + viewY * (BOTTOM_LEFT.y - TOP_LEFT.y) - height;
 			
-			var _xxT:Number = getViewX() * TOP_WIDTH + TOP_LEFT.x - BOTTOM_LEFT.x;
-			var _xxB:Number = getViewX() * BOTTOM_WIDTH;
-			var _xx:Number = _xxB + (1 - getViewY()) * (_xxT - _xxB);
+			var _xxT:Number = viewX * TOP_WIDTH + TOP_LEFT.x - BOTTOM_LEFT.x;
+			var _xxB:Number = viewX * BOTTOM_WIDTH;
+			var _xx:Number = _xxB + (1 - viewY) * (_xxT - _xxB);
 			
 			/*if (_isFront)
 			{
@@ -103,7 +106,7 @@ package
 				
 			x = _xx - 0.5 * width;
 			
-			var _newScale:Number = MIN_SCALE + (1 - MIN_SCALE) * getViewY();
+			var _newScale:Number = MIN_SCALE + (1 - MIN_SCALE) * viewY;
 			scale.x = (width * _newScale) / frameWidth;
 			scale.y = (height * _newScale) / frameHeight;
 			
@@ -119,6 +122,43 @@ package
 		{
 			_isFront = !_isFront;
 			stageDirty = true;
+		}
+		
+		public function decrease():void
+		{
+			_movement = -1;
+		}
+		
+		public function increase():void
+		{
+			_movement = 1;
+		}
+		
+		public function pause():void
+		{
+			_movement = 0;
+		}
+		
+		public function performActions():void
+		{
+			if (_movement > 0)
+			{
+				stageX += _movement * _moveSpeed;
+				if (stageX >= _maxStageX)
+				{
+					stageX = _maxStageX;
+					_movement = 0;
+				}
+			}
+			else if (_movement < 0)
+			{
+				stageX += _movement * _moveSpeed;
+				if (stageX <= _minStageX)
+				{
+					stageX = _minStageX;
+					_movement = 0;
+				}
+			}
 		}
 	}
 	

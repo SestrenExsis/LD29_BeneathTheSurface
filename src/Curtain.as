@@ -24,6 +24,8 @@ package
 			loadGraphic(imgFullCurtain, true, false, 320, 330);
 			setCurtainType(Type, IsLeft);
 			progress = 1;
+			
+			_moveSpeed = 0.005;
 		}
 		
 		public function setCurtainType(Type:int, IsLeft:Boolean):void
@@ -92,17 +94,23 @@ package
 			else if (type == OUTSIDE_CURTAIN)
 			{
 				if (isFront)
-					setDimensions(90, 320);
-				else
 					setDimensions(120, 320);
+				else
+					setDimensions(150, 320);
 				//_order = (isFront) ? 0 : 10000;
 			}
 			else if (type == INSIDE_CURTAIN)
 			{
 				if (isFront)
-					setDimensions(120, 120);
+				{
+					setDimensions(150, 150);
+					alpha = 1;
+				}
 				else
-					setDimensions(90, 90);
+				{
+					setDimensions(120, 120);
+					alpha = 0.5;
+				}
 				//_order = (isFront) ? 10000 : 0;
 			}
 			
@@ -136,15 +144,27 @@ package
 			stageDirty = false;
 		}
 		
-		/*override public function get order():int
+		override public function performActions():void
 		{
-			if (type == INSIDE_CURTAIN)
-				return 0;
-			else if (type == OUTSIDE_CURTAIN)
-				return 1000;
-			else
-				return _order;
-		}*/
+			if (_movement > 0)
+			{
+				progress += _movement * _moveSpeed;
+				if (progress >= 1)
+				{
+					progress = 1;
+					_movement = 0;
+				}
+			}
+			else if (_movement < 0)
+			{
+				progress += _movement * _moveSpeed;
+				if (progress <= 0)
+				{
+					progress = 0;
+					_movement = 0;
+				}
+			}
+		}
 	}
 	
 }
