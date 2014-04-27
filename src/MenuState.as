@@ -20,7 +20,7 @@ package
 			add(_title);
 			
 			var _button:FlxButton;
-			add(new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 72, "Rehearsal", onButtonGame));
+			add(new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 72, "Rehearsal", onButtonRehearsal));
 			add(new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 96, "Opening Night", onButtonGame));
 			if (playback.frameCount > 0)
 			{

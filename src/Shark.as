@@ -54,19 +54,19 @@ package
 		
 		override public function soundEffect():void
 		{
-			playSound(sfxDramatic, 0.8);
+			playSound(sfxDramatic, 1.0);
 		}
 		
 		override public function decrease():void
 		{
 			super.decrease();
-			playSound(sfxToyCar, 0.4);
+			playSound(sfxToyCar, 0.5);
 		}
 		
 		override public function increase():void
 		{
 			super.increase();
-			playSound(sfxToyCar, 0.4);
+			playSound(sfxToyCar, 0.5);
 		}
 	}
 	

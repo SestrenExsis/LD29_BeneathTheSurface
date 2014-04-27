@@ -50,7 +50,22 @@ package
 		
 		public function goToGame():void
 		{
-			FlxG.switchState(new GameState);
+			FlxG.switchState(new GameState(false));
+		}
+		
+		public function onButtonRehearsal():void
+		{
+			fadeToRehearsal();
+		}
+		
+		public function fadeToRehearsal(Timer:FlxTimer = null):void
+		{
+			FlxG.fade(0xff000000, 0.5, goToRehearsal);
+		}
+		
+		public function goToRehearsal():void
+		{
+			FlxG.switchState(new GameState(true));
 		}
 		
 		public function onButtonSpectator():void

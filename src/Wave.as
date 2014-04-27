@@ -7,6 +7,9 @@ package
 		[Embed(source="../assets/images/Waves.png")] public var imgWaves:Class;
 		
 		public var index:int = 0;
+		public var visibleFrames:int = 0;
+		public var visibleMovingFrames:int = 0;
+		protected var _good:Boolean;
 		
 		public function Wave(Index:int)
 		{
@@ -44,6 +47,21 @@ package
 		override public function soundEffect():void
 		{
 			playSound(sfxWaveCrash, 0.5);
+		}
+		
+		public function get good():Boolean
+		{
+			if (visibleFrames <= 240)
+				return true;
+			else
+			{
+				if (stageX < 0.3 || stageX > 0.7)
+					return false;
+				else if ((visibleMovingFrames / visibleFrames) < 0.5)
+					return false;
+				else
+					return true;
+			}
 		}
 	}
 	

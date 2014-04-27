@@ -5,10 +5,14 @@ package
 	public class GameState extends ScreenState
 	{
 		private var theater:TheaterGroup;
+		private var instructions:Instructions;
+		private var isRehearsal:Boolean = false;
 		
-		public function GameState()
+		public function GameState(IsRehearsal:Boolean)
 		{
 			super();
+			
+			isRehearsal = IsRehearsal;
 		}
 		
 		override public function create():void
@@ -19,6 +23,12 @@ package
 			
 			theater = new TheaterGroup(false);
 			add(theater);
+			
+			if (isRehearsal)
+			{
+				instructions = new Instructions();
+				add(instructions);
+			}
 		}
 		
 		override public function update():void
