@@ -37,7 +37,7 @@ package
 			else if (_movement < 0)
 				(isFront) ? play("right_run") : play("left_run");
 			else
-				(isFront) ? play("right_idle") : play("left_idle");
+				(isFront) ? play("left_idle") : play("right_idle");
 		}
 		
 		override protected function calcFrame():void
@@ -50,6 +50,23 @@ package
 		override public function switchView():void
 		{
 			super.switchView();
+		}
+		
+		override public function soundEffect():void
+		{
+			playSound(sfxDramatic, 0.8);
+		}
+		
+		override public function decrease():void
+		{
+			super.decrease();
+			playSound(sfxToyCar, 0.4);
+		}
+		
+		override public function increase():void
+		{
+			super.increase();
+			playSound(sfxToyCar, 0.4);
 		}
 	}
 	

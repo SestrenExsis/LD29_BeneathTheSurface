@@ -40,6 +40,11 @@ package
 			super.switchView();
 			frame = 2 * index + ((isFront) ? 0 : 1);
 		}
+		
+		override public function soundEffect():void
+		{
+			playSound(sfxWaveCrash, 0.5);
+		}
 	}
 	
 }

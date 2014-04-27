@@ -4,7 +4,8 @@ package
 	
 	public class MenuState extends ScreenState
 	{
-		
+		[Embed(source="../assets/images/Title.png")] public var imgTitle:Class;
+
 		public function MenuState()
 		{
 			super();
@@ -14,17 +15,22 @@ package
 		{
 			super.create();
 			
+			var _title:FlxSprite = new FlxSprite(0, 0);
+			_title.loadGraphic(imgTitle);
+			add(_title);
+			
 			var _button:FlxButton;
-			add(new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height - 30, "Rehearsal", onButtonGame));
-			add(new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 0, "Opening Night", onButtonGame));
+			add(new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 72, "Rehearsal", onButtonGame));
+			add(new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 96, "Opening Night", onButtonGame));
 			if (playback.frameCount > 0)
 			{
-				_button = new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 30, "Spectate", onButtonSpectator);
+				_button = new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 120, "Spectate", onButtonSpectator);
 			}
 			else
 			{
-				_button = new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 30, "Spectate");
-				_button.label.color = 0x999999;
+				_button = new FlxButton(0.5 * FlxG.width - 40, 0.5 * FlxG.height + 120, "Spectate");
+				//_button.label.color = 0x999999;
+				_button.alpha = 0.35;
 			}
 			add(_button);
 		}

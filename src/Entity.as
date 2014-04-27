@@ -4,6 +4,20 @@ package
 	
 	public class Entity extends FlxSprite
 	{
+		[Embed(source="assets/sounds/Dramatic1.mp3")] public static var sfxDramatic1:Class;
+		[Embed(source="assets/sounds/Dramatic2.mp3")] public static var sfxDramatic2:Class;
+		[Embed(source="assets/sounds/Dramatic3.mp3")] public static var sfxDramatic3:Class;
+		public static var sfxDramatic:Array = [sfxDramatic1, sfxDramatic2, sfxDramatic3];
+		
+		[Embed(source="assets/sounds/WaveCrash1.mp3")] public static var sfxWaveCrash1:Class;
+		[Embed(source="assets/sounds/WaveCrash2.mp3")] public static var sfxWaveCrash2:Class;
+		[Embed(source="assets/sounds/WaveCrash3.mp3")] public static var sfxWaveCrash3:Class;
+		[Embed(source="assets/sounds/WaveCrash4.mp3")] public static var sfxWaveCrash4:Class;
+		public static var sfxWaveCrash:Array = [sfxWaveCrash1, sfxWaveCrash2, sfxWaveCrash3, sfxWaveCrash4];
+		
+		[Embed(source="assets/sounds/ToyCar1.mp3")] public static var sfxToyCar1:Class;
+		public static var sfxToyCar:Array = [sfxToyCar1];
+		
 		public static const BOTTOM_LEFT:FlxPoint = new FlxPoint(0, 360);
 		public static const TOP_LEFT:FlxPoint = new FlxPoint(60, 270);
 		public static const BOTTOM_WIDTH:Number = 640;
@@ -42,6 +56,12 @@ package
 			
 			if (stageDirty)
 				refreshPosition();
+		}
+		
+		public static function playSound(Sounds:Array, Volume:Number = 1.0):void
+		{
+			var _seed:Number = Math.floor(Sounds.length * Math.random());
+			FlxG.play(Sounds[_seed], Volume, false, false);
 		}
 		
 		public function get viewX():Number
@@ -130,6 +150,11 @@ package
 		public function pause():void
 		{
 			_movement = 0;
+		}
+		
+		public function soundEffect():void
+		{
+			
 		}
 		
 		public function performActions():void

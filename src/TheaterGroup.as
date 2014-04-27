@@ -88,7 +88,12 @@ package
 			
 			stageObjects.sort("order");
 			
-			if (!isSpectating)
+			if (isSpectating)
+			{
+				information.visible = false;
+				lastAction.visible = false;
+			}
+			else
 				switchView();
 			
 			if (isAudienceView)
@@ -150,6 +155,8 @@ package
 				rightAction();
 			if (FlxG.keys.justPressed("DOWN") || FlxG.keys.justPressed("K"))
 				downAction();
+			if (FlxG.keys.justPressed("UP") || FlxG.keys.justPressed("I"))
+				upAction();
 			
 			if (state == 2 && frontLeftCurtain.progress == 1 && frontRightCurtain.progress == 1)
 				ScreenState.goToMenu();
@@ -218,6 +225,14 @@ package
 				wave0.pause();
 			else if (selected == "Shark")
 				shark.pause();
+		}
+		
+		private function upAction():void
+		{
+			if (selected == "Front Waves" || selected == "Middle Waves" || selected == "Back Waves")
+				wave0.soundEffect();
+			else if (selected == "Shark")
+				shark.soundEffect();
 		}
 	}
 	

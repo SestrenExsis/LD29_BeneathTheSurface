@@ -8,7 +8,7 @@ package
 
 		public function Seats()
 		{
-			super(0, 270);
+			super(0, 290);
 			
 			loadGraphic(imgSeat, true, false, 640, 100);
 			stageY = 1;
@@ -32,7 +32,7 @@ package
 			else
 			{
 				visible = isFront;
-				y = 270;
+				y = 290;
 				scale.x = scale.y = 1;
 			}
 			
