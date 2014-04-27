@@ -26,6 +26,9 @@ package
 			progress = 1;
 			
 			_moveSpeed = 0.005;
+			
+			_good = false;
+			_bad = false;
 		}
 		
 		public function setCurtainType(Type:int, IsLeft:Boolean):void
@@ -162,6 +165,17 @@ package
 					_movement = 0;
 				}
 			}
+		}
+		
+		override public function get good():Boolean
+		{
+			if (progress == 0)
+			{
+				_good = true;
+				return true;
+			}
+			else
+				return _good;
 		}
 	}
 	

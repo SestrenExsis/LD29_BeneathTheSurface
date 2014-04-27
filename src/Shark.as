@@ -26,6 +26,9 @@ package
 			
 			_minStageX = 0.05;
 			_maxStageX = 0.95;
+			
+			_good = false;
+			_bad = false;
 		}
 		
 		override public function update():void
@@ -67,6 +70,24 @@ package
 		{
 			super.increase();
 			playSound(sfxToyCar, 0.5);
+		}
+		
+		override public function get good():Boolean
+		{
+			if (visibleFrames <= 240)
+				return false;
+			else if (_good)
+				return true;
+			else
+			{
+				if (stageX > 0.67 || visibleMovingFrames > 360)
+				{
+					_good = true;
+					return true;
+				}
+				else
+					return false;
+			}
 		}
 	}
 	

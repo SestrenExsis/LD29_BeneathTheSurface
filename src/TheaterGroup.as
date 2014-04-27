@@ -5,6 +5,7 @@ package
 	public class TheaterGroup extends FlxGroup
 	{
 		public static var selected:String = "";
+		public static var goodShow:Boolean = false;
 		public var state:int = 0;
 		
 		private var stageObjects:FlxGroup;
@@ -159,7 +160,13 @@ package
 				upAction();
 			
 			if (state == 2 && frontLeftCurtain.progress == 1 && frontRightCurtain.progress == 1)
+			{
+				if (wave0.good && wave1.good && wave2.good && shark.good && frontLeftCurtain.good && frontRightCurtain.good)
+					goodShow = true;
+				else
+					goodShow = false;
 				ScreenState.goToMenu();
+			}
 		}
 		
 		private function leftAction():void

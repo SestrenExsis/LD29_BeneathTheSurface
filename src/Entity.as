@@ -28,7 +28,9 @@ package
 		public static var currentOrder:int = 0;
 		
 		public var order:int = 0;
-		
+		public var visibleFrames:int = 0;
+		public var visibleMovingFrames:int = 0;
+
 		protected var _isFront:Boolean = true;
 		protected var _stageX:Number = 0;
 		protected var _stageY:Number = 0;
@@ -36,6 +38,8 @@ package
 		protected var _maxStageX:Number = 1;
 		protected var _movement:int = 0;
 		protected var _moveSpeed:Number = 0;
+		protected var _bad:Boolean = true;
+		protected var _good:Boolean = true;
 		
 		public var stageDirty:Boolean = false;
 
@@ -177,6 +181,11 @@ package
 					_movement = 0;
 				}
 			}
+		}
+		
+		public function get good():Boolean
+		{
+			return true;
 		}
 	}
 	
