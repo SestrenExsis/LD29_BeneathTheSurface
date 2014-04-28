@@ -6,6 +6,8 @@ package
 	public class ScreenState extends FlxState
 	{
 		public static var playback:FlxReplay = new FlxReplay();
+		public static var wasRehearsal:Boolean = false;
+		public static var wasGood:Boolean = false;
 		
 		public function ScreenState()
 		{
@@ -81,6 +83,27 @@ package
 		public function goToSpectator():void
 		{
 			FlxG.switchState(new SpectatorState);
+		}
+		
+		public function onButtonResults():void
+		{
+			fadeToResults();
+		}
+		
+		public function fadeToResults(Timer:FlxTimer = null):void
+		{
+			FlxG.fade(0xff000000, 0.5, goToResults);
+		}
+		
+		public static function goToResults():void
+		{
+			var _index:int = 6;
+			if (!wasGood)
+				_index++;
+			if (wasRehearsal)
+				_index += 2;
+			
+			FlxG.switchState(new ResultState(_index));
 		}
 	}
 	

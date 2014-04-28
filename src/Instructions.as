@@ -43,7 +43,7 @@ package
 		{
 			Timer.stop();
 			index++;
-			if (index < maxFrames)
+			if (index < 6)
 			{
 				showScript(index);
 				Timer.start(12, 1, onTimerNext);

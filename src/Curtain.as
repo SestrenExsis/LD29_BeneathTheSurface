@@ -127,8 +127,11 @@ package
 		{
 			if (Value > 1)
 				Value = 1;
-			else if (Value < 0)
+			else if (Value <= 0)
+			{
 				Value = 0;
+				_good = true;
+			}
 			_progress = Value;
 			var _newWidth:Number = minWidth + Value * (maxWidth - minWidth);
 			scale.x = _newWidth / frameWidth;
@@ -169,13 +172,12 @@ package
 		
 		override public function get good():Boolean
 		{
-			if (progress == 0)
+			if (_good && progress == 1)
 			{
-				_good = true;
 				return true;
 			}
 			else
-				return _good;
+				return false;
 		}
 	}
 	

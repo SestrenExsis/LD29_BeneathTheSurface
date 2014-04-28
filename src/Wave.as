@@ -20,7 +20,7 @@ package
 			stageX = 0.5;
 			stageY = 0.665 - 0.331 * ((index) / 2);
 			
-			_moveSpeed = 0.001;
+			_moveSpeed = 0.0005;
 			
 			FlxG.watch(this, "stageX");
 			
@@ -31,6 +31,10 @@ package
 		override public function update():void
 		{	
 			super.update();
+			if (visibleFrames > 120 && (stageX < 0.25 || stageX > 0.75))
+				_bad = true;
+			if (soundsPlayed > 0)
+				_good = true;
 		}
 		
 		override protected function calcFrame():void
@@ -49,10 +53,14 @@ package
 		override public function soundEffect():void
 		{
 			playSound(sfxWaveCrash, 0.5);
+			soundsPlayed++;
 		}
 		
 		override public function get good():Boolean
 		{
+			if (!_good)
+				return false;
+			else
 			if (visibleFrames <= 240)
 				return true;
 			else if (_bad)
@@ -61,7 +69,6 @@ package
 			{
 				if (stageX < 0.33 || stageX > 0.67)
 				{
-					_bad = true;
 					return false;
 				}
 				else if ((visibleMovingFrames / visibleFrames) < 0.5)

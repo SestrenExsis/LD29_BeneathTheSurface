@@ -41,6 +41,11 @@ package
 				(isFront) ? play("right_run") : play("left_run");
 			else
 				(isFront) ? play("left_idle") : play("right_idle");
+			
+			if (visibleFrames > 0 && soundsPlayed > 0 && (stageX > 0.67 || visibleMovingFrames > 360))
+			{
+				_good = true;
+			}
 		}
 		
 		override protected function calcFrame():void
@@ -58,6 +63,7 @@ package
 		override public function soundEffect():void
 		{
 			playSound(sfxDramatic, 1.0);
+			soundsPlayed++;
 		}
 		
 		override public function decrease():void
@@ -80,13 +86,7 @@ package
 				return true;
 			else
 			{
-				if (stageX > 0.67 || visibleMovingFrames > 360)
-				{
-					_good = true;
-					return true;
-				}
-				else
-					return false;
+				return false;
 			}
 		}
 	}

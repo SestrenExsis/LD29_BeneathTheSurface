@@ -6,13 +6,12 @@ package
 	{
 		private var theater:TheaterGroup;
 		private var instructions:Instructions;
-		private var isRehearsal:Boolean = false;
 		
 		public function GameState(IsRehearsal:Boolean)
 		{
 			super();
 			
-			isRehearsal = IsRehearsal;
+			wasRehearsal = IsRehearsal;
 		}
 		
 		override public function create():void
@@ -24,7 +23,7 @@ package
 			theater = new TheaterGroup(false);
 			add(theater);
 			
-			if (isRehearsal)
+			if (wasRehearsal)
 			{
 				instructions = new Instructions();
 				add(instructions);

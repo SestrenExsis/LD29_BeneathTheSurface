@@ -30,6 +30,7 @@ package
 		public var order:int = 0;
 		public var visibleFrames:int = 0;
 		public var visibleMovingFrames:int = 0;
+		public var soundsPlayed:int = 0;
 
 		protected var _isFront:Boolean = true;
 		protected var _stageX:Number = 0;
@@ -186,6 +187,11 @@ package
 		public function get good():Boolean
 		{
 			return true;
+		}
+		
+		public function get movement():int
+		{
+			return _movement;
 		}
 	}
 	

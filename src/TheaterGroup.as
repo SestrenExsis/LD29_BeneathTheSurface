@@ -131,6 +131,22 @@ package
 		{	
 			super.update();
 			
+			if (state == 1 || state == 2)
+			{
+				wave0.visibleFrames++;
+				if (wave0.movement)
+					wave0.visibleMovingFrames++;
+				wave1.visibleFrames++;
+				if (wave1.movement)
+					wave1.visibleMovingFrames++;
+				wave2.visibleFrames++;
+				if (wave2.movement)
+					wave2.visibleMovingFrames++;
+				shark.visibleFrames++;
+				if (shark.movement)
+					shark.visibleMovingFrames++;
+			}
+			
 			if (FlxG.keys.justPressed("C"))
 			{
 				if (selected == "Open Curtain")
@@ -162,10 +178,19 @@ package
 			if (state == 2 && frontLeftCurtain.progress == 1 && frontRightCurtain.progress == 1)
 			{
 				if (wave0.good && wave1.good && wave2.good && shark.good && frontLeftCurtain.good && frontRightCurtain.good)
-					goodShow = true;
+					ScreenState.wasGood = true;
 				else
-					goodShow = false;
-				ScreenState.goToMenu();
+					ScreenState.wasGood = false;
+				FlxG.log("Wave0: " + wave0.good);
+				FlxG.log("Wave1: " + wave1.good);
+				FlxG.log("Wave2: " + wave2.good);
+				FlxG.log("Shark: " + shark.good);
+				FlxG.log("LeftCurtain: " + frontLeftCurtain.good);
+				FlxG.log("RightCurtain: " + frontRightCurtain.good);
+				if (isSpectating)
+					ScreenState.goToMenu();
+				else
+					ScreenState.goToResults();
 			}
 		}
 		
@@ -237,7 +262,14 @@ package
 		private function upAction():void
 		{
 			if (selected == "Front Waves" || selected == "Middle Waves" || selected == "Back Waves")
-				wave0.soundEffect();
+			{
+				if (wave0.soundsPlayed == 0)
+					wave0.soundEffect();
+				else if (wave1.soundsPlayed == 0)
+					wave1.soundEffect();
+				else
+					wave2.soundEffect();
+			}
 			else if (selected == "Shark")
 				shark.soundEffect();
 		}
